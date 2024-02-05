@@ -94,7 +94,7 @@ export const MockPostComponent4:PostComponentType4 = {
   ],
   content: "열심히 과외중 4일차",
   timestamp: 0,
-  countComment: 10
+  countComment: 6
 }
 
 export interface PostComponentType5{
@@ -126,7 +126,82 @@ export const MockPostComponent5:PostComponentType5 = {
   ],
   content: "열심히 과외중 5일차",
   timestamp: 0,
-  countComment: 10,
+  countComment: 6,
   countLike: 15,
   isSelectedLike: true
 }
+
+
+export interface CommentComponentType{
+  id: number;
+  user: {
+    userId: number;
+    nickname: string;
+    profileImageUrl: string|null;
+  }
+  content: string|null;
+  timestamp: number;
+}
+
+export const MockCommentComponentList:CommentComponentType[] = [
+  {
+    id:1,
+    user:{
+      userId: 2,
+      nickname: "맹구",
+      profileImageUrl: "img/mangu.png"
+    },
+    content: "응원할게",
+    timestamp: 0,
+  },
+  {
+    id:2,
+    user:{
+      userId: 3,
+      nickname: "Hoon",
+      profileImageUrl: "img/hoon.png"
+    },
+    content: "ㅋㅋㅋㅋ",
+    timestamp: 0,
+  },
+  {
+    id:3,
+    user:{
+      userId: 4,
+      nickname: "철수",
+      profileImageUrl: "img/chul.png"
+    },
+    content: "화이팅~~",
+    timestamp: 0,
+  },
+  {
+    id:4,
+    user:{
+      userId: 5,
+      nickname: "JJangJJang",
+      profileImageUrl: "img/jjangu.png"
+    },
+    content: "ㅁㅎ?",
+    timestamp: 0,
+  },
+  {
+    id:5,
+    user:{
+      userId: 6,
+      nickname: "Boss",
+      profileImageUrl: "img/wonjang.png"
+    },
+    content: "열심히 하길 바라요",
+    timestamp: 0,
+  },
+  {
+    id:6,
+    user:{
+      userId: 6,
+      nickname: "J",
+      profileImageUrl: "img/jjanga.png"
+    },
+    content: "❤️❤️❤️",
+    timestamp: 0,
+  },
+]

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PostComponentType1, PostComponentType2, PostComponentType3, PostComponentType4, PostComponentType5 } from "./types";
+import { CommentComponentType, MockCommentComponentList, PostComponentType1, PostComponentType2, PostComponentType3, PostComponentType4, PostComponentType5 } from "./types";
 import { useCallback, useState } from "react";
 
 const WIDTH = 475;
@@ -287,7 +287,7 @@ function MediaAreaContainer({imageUrl}:{imageUrl:string[]|string|null}){
   },[indexState]);
 
   return (
-    <MediaArea>
+    <MediaArea >
       <MediaImg src={imageUrl[indexState]} /> 
       <MediaPagination>
         <MediaPaginationSplash />
@@ -311,6 +311,65 @@ function MediaAreaContainer({imageUrl}:{imageUrl:string[]|string|null}){
   );
 }
 
+
+const CommentListArea = styled.div`
+
+`;
+function CommentListAreaContainer({list}:{list:CommentComponentType[]}){
+  list.map( e => (<CommentComponent item={e}/>))
+  return (
+    <CommentListArea>
+      {list.map( e => (<CommentComponent key={e.id} item={e}/>))}
+    </CommentListArea>
+  )
+}
+
+const CommentItemContainer = styled.div`
+  width: 100%;
+  min-height: 46px;
+  margin-bottom:12px;
+  display: flex;
+  flex-direction: row;
+  justify-contents: center;
+  align-items: center;
+`
+const CommentProfileTextContainer = styled.div`
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #000000;
+`
+const CommentProfileNicknameSpan = styled.span`
+  font-size: 14px;
+  color: #000000;
+  font-weight:700;
+  text-decoration: none;
+  cursor: pointer;
+`;
+const CommentNicknameContainer = styled.div`
+  margin-right:4px;
+`;
+ContentNicknameContainer
+function CommentComponent({item}:{item:CommentComponentType}){
+  const { user:{nickname, profileImageUrl}, content } = item;
+  return (
+    <CommentItemContainer>
+      <ProfileImgContainer>
+        <ProfileImg src={profileImageUrl || "/img/blankProfile.png"}/>
+      </ProfileImgContainer>
+      <CommentProfileTextContainer>
+        <CommentNicknameContainer>
+          <CommentProfileNicknameSpan>
+            {nickname}
+          </CommentProfileNicknameSpan>
+        </CommentNicknameContainer>
+        {content}
+      </CommentProfileTextContainer>
+    </CommentItemContainer>
+  )
+}
 
 interface PostComponent1Prop{
   item: PostComponentType1
@@ -428,6 +487,8 @@ export function PostComponent4({item}:PostComponent4Prop){
   const {user, location, imageUrl, content, countComment, timestamp} = item;
   const {nickname, profileImageUrl} = user;
   const [InputValue, setInputValue] = useState<string>("");
+  const [commentLimit, setCommentLimit] = useState<number>(0);
+  const [commentList] = useState<CommentComponentType[]>(MockCommentComponentList);
   return (
     <PostContainer>
       <ProfileArea>
@@ -468,9 +529,11 @@ export function PostComponent4({item}:PostComponent4Prop){
       </ContentContainer>
 
       <CommentArea>
-        <CommentCountContainer>
-          댓글 {countComment}개 모두 보기
-        </CommentCountContainer>
+        { commentLimit >0 ? null :
+          (<CommentCountContainer onClick={()=>setCommentLimit(10)}>
+            댓글 {countComment}개 모두 보기
+          </CommentCountContainer>)}
+        <CommentListAreaContainer list={commentList.slice(0,commentLimit)} />
         <CommentInputContainer>
           <CommentInput value={InputValue} onChange={(e:any)=>setInputValue(e.target.value)} type="text" placeholder="댓글 달기..."/>
           <CommentConfirm style={{display: InputValue.length > 0 ? 'block' : 'none'}}>
@@ -490,6 +553,8 @@ export function PostComponent5({item}:PostComponent5Prop){
   const {nickname, profileImageUrl} = user;
   const [InputValue, setInputValue] = useState<string>("");
   const [isSelectedLike, setSelectedLike] = useState<boolean>(item.isSelectedLike);
+  const [commentLimit, setCommentLimit] = useState<number>(0);
+  const [commentList, setCommentList] = useState<CommentComponentType[]>(MockCommentComponentList);
   return (
     <PostContainer>
       <ProfileArea>
@@ -535,9 +600,12 @@ export function PostComponent5({item}:PostComponent5Prop){
 
       
       <CommentArea>
-        <CommentCountContainer>
-          댓글 {countComment}개 모두 보기
-        </CommentCountContainer>
+        
+        { commentLimit >0 ? null :
+          (<CommentCountContainer onClick={()=>setCommentLimit(10)}>
+            댓글 {countComment}개 모두 보기
+          </CommentCountContainer>)}
+        <CommentListAreaContainer list={commentList.slice(0,commentLimit)} />
         <CommentInputContainer>
           <CommentInput value={InputValue} onChange={(e:any)=>setInputValue(e.target.value)} type="text" placeholder="댓글 달기..."/>
           <CommentConfirm style={{display: InputValue.length > 0 ? 'block' : 'none'}}>
